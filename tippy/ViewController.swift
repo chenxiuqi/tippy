@@ -36,11 +36,31 @@ class ViewController: UIViewController {
         
         // ?? 0 provides a default value of 0 if values cannot be casted
         let bill = Double(billField.text!) ?? 0
+        
         let tip = bill * tipPercentages[tipControl.selectedSegmentIndex]
         let total = bill + tip
         
         tipLabel.text = String(format: "$%.2f", tip)
         totalLabel.text = String(format: "$%.2f", total)
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let defaults = UserDefaults.standard
+        tipControl.selectedSegmentIndex = defaults.integer(forKey: "default_tip_percentage")
+      
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        let defaults = UserDefaults.standard
+        let selectedIndex = tipControl.selectedSegmentIndex
+        defaults.set(selectedIndex, forKey: "default_tip_percentage")
+        defaults.synchronize()
+    }
+    
+    
+    
 }
 
